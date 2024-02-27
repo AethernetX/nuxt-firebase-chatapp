@@ -4,7 +4,7 @@
 
 
 <template>
-
+  <chatApp />
 </template>
 
 <style>

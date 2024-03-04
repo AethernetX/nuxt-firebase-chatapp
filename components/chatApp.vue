@@ -2,6 +2,7 @@
 
     import {addDoc, collection, serverTimestamp} from "firebase/firestore"
     import { useFirebaseAuth } from "vuefire";
+    import { ref } from "vue";
 
     const user = useCurrentUser();
     const db = useFirestore();
@@ -9,12 +10,17 @@
     const messageRef = collection(db, "messages");
     const messages = useCollection(messageRef);
 
-    function sendMessage(){
+    const newMessage = ref("");
+
+    function sendMessage(){        
         //send message
         addDoc(messageRef, {
-            text: "testing text",
+            text: newMessage.value,
             CreateAt: serverTimestamp()
         });
+
+        //empty when done
+        newMessage.value == "";
     }
 
 </script>
@@ -26,8 +32,11 @@
                 <p>{{ message.CreateAt.toDate() }}</p>
                 <h1>{{ message.text }}</h1>
             </div>
-            <input type="text">
-            <button @click="sendMessage()">Send</button>
+            <form @submit.prevent="sendMessage">
+                <input required v-model="newMessage">
+                <button>Send</button>
+            </form>
+            
        </template>
         <template v-else>
             <div>sign in</div>

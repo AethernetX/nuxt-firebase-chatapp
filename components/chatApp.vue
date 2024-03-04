@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-    import {addDoc, collection, serverTimestamp} from "firebase/firestore"
+    import {addDoc, collection, orderBy, query, serverTimestamp} from "firebase/firestore"
     import { useFirebaseAuth } from "vuefire";
     import { ref } from "vue";
 
@@ -8,7 +8,8 @@
     const db = useFirestore();
     const auth = useFirebaseAuth()!
     const messageRef = collection(db, "messages");
-    const messages = useCollection(messageRef);
+    const q = query(messageRef, orderBy("CreateAt", "asc"));
+    const messages = useCollection(q);
 
     const newMessage = ref("");
 

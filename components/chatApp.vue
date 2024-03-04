@@ -1,24 +1,33 @@
 <script lang="ts" setup>
 
-    import {collection} from "firebase/firestore"
+    import {addDoc, collection, serverTimestamp} from "firebase/firestore"
     import { useFirebaseAuth } from "vuefire";
-    import { 
-    getRedirectResult, 
-    } from 'firebase/auth';
 
     const user = useCurrentUser();
     const db = useFirestore();
     const auth = useFirebaseAuth()!
-    const messages = useCollection(collection(db, "messages"));
+    const messageRef = collection(db, "messages");
+    const messages = useCollection(messageRef);
 
+    function sendMessage(){
+        //send message
+        addDoc(messageRef, {
+            text: "testing text",
+            CreateAt: serverTimestamp()
+        });
+    }
 
 </script>
 
 <template>
     <div class="chatApp">
         <template v-if="user">
-            <h1>{{ messages }}</h1>
-            <h1>{{ messages[0].text }}</h1>
+            <div v-for="message in messages">
+                <p>{{ message.CreateAt.toDate() }}</p>
+                <h1>{{ message.text }}</h1>
+            </div>
+            <input type="text">
+            <button @click="sendMessage()">Send</button>
        </template>
         <template v-else>
             <div>sign in</div>

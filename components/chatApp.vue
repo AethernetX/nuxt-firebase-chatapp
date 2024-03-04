@@ -14,14 +14,17 @@
     const newMessage = ref("");
 
     function sendMessage(){        
-        //send message
+        //sends message text alongside other useful data
+        //send user id and user image url
         addDoc(messageRef, {
             text: newMessage.value,
-            CreateAt: serverTimestamp()
+            CreateAt: serverTimestamp(),
+            uid: user.value?.uid,
+            pfp: user.value?.photoURL,
         });
 
         //empty when done
-        newMessage.value == "";
+        newMessage.value = "";
     }
 
 </script>
@@ -30,6 +33,8 @@
     <div class="chatApp">
         <template v-if="user">
             <div v-for="message in messages">
+                <!--assume the use has a pfp-->
+                <img :src="message.pfp" />
                 <p>{{ message.CreateAt.toDate() }}</p>
                 <h1>{{ message.text }}</h1>
             </div>

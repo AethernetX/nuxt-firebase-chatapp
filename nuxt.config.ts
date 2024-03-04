@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   vuefire: {
     auth: {
       enabled: true,
+      sessionCookie: true,
     },
     config: {
       apiKey: "AIzaSyDv6T-nT09y5aEJUwSkrTWPKb5tSjhiJoA",

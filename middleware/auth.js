@@ -1,13 +1,9 @@
-export default defineNuxtRouteMiddleware(async (to, from) => {
+/**
+ * Middleware to redirect to login page if user is not authenticated.
+ */
+export default defineNuxtRouteMiddleware(async (to) => {
   const user = await getCurrentUser()
-
-  // redirect the user to the login page
-  if (user) {
-    return navigateTo({
-      path: '/login',
-      query: {
-        redirect: to.fullPath,
-      },
-    })
+  if (!user) {
+    return navigateTo({ path: '/login', query: { redirect: to.fullPath } })
   }
 })

@@ -32,12 +32,16 @@
 <template>
     <div class="chatApp">
         <template v-if="user">
-            <div v-for="message in messages">
-                <!--assume the use has a pfp-->
-                <img :src="message.pfp" />
-                <p>{{ message.CreateAt.toDate() }}</p>
-                <h1>{{ message.text }}</h1>
+            <div class="messages">
+                <div v-for="message in messages" :class="user.uid == message.uid ? 'userMessage' : 'otherMessage'">
+                    <!--assume the use has a pfp-->
+                    <img :src="message.pfp" />
+                    <p>{{ message.CreateAt.toDate() }}</p>
+                    <h1>{{ message.text }}</h1>
+                </div>
+                <div id="bottom"></div>
             </div>
+            
             <form @submit.prevent="sendMessage">
                 <input required v-model="newMessage">
                 <button>Send</button>
@@ -52,7 +56,22 @@
 
 <style scoped>
  .chatApp {
-    color: white;
     font-family: Arial, Helvetica, sans-serif;
+
+ }
+
+ .messages {
+    overflow-y: scroll;
+    height: 500px;
+    width: 50%;
+    padding: 1rel;
+ }
+
+ .userMessage {
+    color: #0084ff
+ }
+
+ .otherMessage {
+    color: #00ff59
  }
 </style>
